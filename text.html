@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunga Terbang</title>
+    <title>Menampilkan Tulisan</title>
+    <title>Kuis Jawaban Input</title>
+    <style>
+        body {
+            background-color: skyblue;
+            overflow: hidden;
+            margin: 0;
+            text-align: center;
+        }
+        .bunga {
+            width: 100px;
+            height: 100px;
+            background-image: url('aw.png'); /* Ganti dengan gambar bunga */
+            background-size: cover;
+            position: absolute;
+        }
+        .ceks {
+            font-size: 24px;
+            font-style: italic;
+            color: #333;
+            background: pink;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .pantun {
+            font-size: 24px;
+            font-style: italic;
+            color: #333;
+            background: pink;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    
+<script>
+    function buatBunga() {
+        let bunga = document.createElement("div");
+        bunga.className = "bunga"
+        document.body.appendChild(bunga);
+
+        let x = Math.random() * window.innerWidth;
+        let y = window.innerHeight;
+        bunga.style.left = `${x}px`;
+        bunga.style.top = `${y}px`;
+
+        let kecepatan = Math.random() * 5 + 2;
+
+        function gerak() {
+            y -= kecepatan;
+            bunga.style.top = `${y}px`;
+
+            if (y < -100) {
+                bunga.remove();
+            } else {
+                requestAnimationFrame(gerak);
+            }
+        }
+
+        gerak();
+        
+        function tampilkanTeks() {
+            document.getElementById("teks").style.display = "block";
+        }
+    }
+
+    setInterval(buatBunga, 1000);
+</script>
+    <div class="ceks">"Ada Sedikit Pantun Nich"</div>
+    <br><br><div class="pantun">"Sekarang aku gendutan gak sih? Kamu tau gak kenapa?<br> Soalnya kamu sudah mengembangkan cinta yang banyak di hatiku."</div>
+    
+    
+    <h2 id="pertanyaan">Soal akan muncul di sini</h2>
+    <input type="text" id="jawaban" placeholder="Ketik jawaban di sini">
+    <button onclick="cekJawaban()">Submit</button>
+    <p id="hasil"></p>
+
+    <script>
+        let indexSoal = 0;
+        let skor = 0;
+
+        // Soal dan Jawaban
+        let soal = [
+            { pertanyaan: "Tanggal & Bulan Berapa Kita Awal Chattingan?", jawaban: "1 april" },
+            { pertanyaan: "Waktu Kita Ketumua Pagi, Siang Atau Malam?", jawaban: "Malam" },
+            { pertanyaan: "Warna Kesukaan Akyu?", jawaban: "Oren" },
+            { pertanyaan: "Pertama Ketemu Naik Motor?", jawaban: "pcx" },
+            { pertanyaan: "Kata Sandi HP Yang Bebs Ali?", jawaban: "230423" }
+        ];
+
+        function tampilkanSoal() {
+            if (indexSoal < soal.length) {
+                document.getElementById("pertanyaan").innerText = soal[indexSoal].pertanyaan;
+                document.getElementById("jawaban").value = "";
+                document.getElementById("hasil").innerText = "";
+                document.getElementById("test").innerText = "";
+
+            } else {
+                document.getElementById("pertanyaan").innerText = "Kuis selesai!";
+                document.getElementById("hasil").innerText = `Skor Anda: ${skor}/${soal.length}`;
+                document.getElementById("jawaban").style.display = "none";
+            }
+        }
+
+        function cekJawaban() {
+            let jawabanUser = document.getElementById("jawaban").value.trim().toLowerCase();
+            let jawabanBenar = soal[indexSoal].jawaban.toLowerCase();
+
+            if (jawabanUser === jawabanBenar) {
+                skor++;
+                indexSoal++;
+                tampilkanSoal();
+            } else {
+                document.getElementById("hasil").innerText = "❌ Jawaban salah, coba lagi!";
+                document.getElementById("hasil").style.color = "red";
+            }
+        }
+
+        // Menampilkan soal pertama saat halaman dimuat
+        tampilkanSoal();
+    </script>
+
+</body>
+</html>
